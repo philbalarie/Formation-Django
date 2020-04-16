@@ -1,5 +1,43 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block content %}
-<h1>Voyages</h1>
+<h1 class="mt-4 mb-3">Voyages</h1>
+
+<div class="row row-cols-1 row-cols-md-2">
+    {% for travel in travels %}
+    <div class="col mb-4">
+        <!-- Card -->
+<div class="card">
+
+    <!-- Card image -->
+    <div class="view overlay">
+      <img class="card-img-top" src="{{travel.destination.picture.url}}"
+        alt="Card image cap">
+      <a href="{% url 'travel' travel.slug %}">
+        <div class="mask rgba-white-slight"></div>
+      </a>
+    </div>
+  
+    <!-- Card content -->
+    <div class="card-body">
+  
+      <!-- Title -->
+      <h4 class="card-title">{{ travel.destination.hotel_name }}</h4>
+      <!-- Text -->
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+        content.</p>
+      <!-- Button -->
+      <a href="{% url 'travel' travel.slug %}" class="btn btn-primary">{{ travel.price|intcomma }} $</a>
+  
+    </div>
+  
+  </div>
+  <!-- Card -->
+    </div>
+    {% endfor %}
+
+    
+</div>
+  
 {% endblock content %}

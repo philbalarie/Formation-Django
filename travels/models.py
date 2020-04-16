@@ -1,6 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
+from django.shortcuts import reverse
 
 COUNTRY_CHOICES = (
     ('M', 'Mexique'),
@@ -24,6 +25,9 @@ class Travel(models.Model):
     start_day = models.DateField()
     end_day = models.DateField()
     slug = models.SlugField()
+
+    """def get_absolute_url(self, slug):
+        return reverse('travels', kwargs={'slug': self.slug})"""
 
     def __str__(self):
         return self.name

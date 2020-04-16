@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+<div class="container my-5 py-5 z-depth-1">
+
+
+    <!--Section: Content-->
+    <section class="px-md-5 mx-md-5 text-center text-lg-left dark-grey-text">
+
+        <!--Grid row-->
+        <div class="row">
+
+            <!--Grid column-->
+            <div class="col-md-6 mb-4 mb-md-0">
+
+                <!--Image-->
+                <div>
+                    <img src="{{ travel.destination.picture.url }}" class="img-fluid"
+                        alt="{{ travel.destination.hotel_name }}">
+                    <a href="#">
+                        <div class="mask rgba-white-light"></div>
+                    </a>
+                </div>
+
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-md-6 mb-4 mb-md-0">
+
+                <h3 class="font-weight-bold">{{ travel.name }}</h3>
+                <!-- Price -->
+                <p class="text-primary font-weight-bold">{{ travel.price|intcomma }} $</p>
+
+                <p class="text-muted">{{ travel.destination.description }}</p>
+
+                <a class="btn btn-blue btn-md ml-0" href="#" role="button">Commander<i class="fa fa-plane ml-2"></i></a>
+
+            </div>
+            <!--Grid column-->
+
+        </div>
+        <!--Grid row-->
+
+    </section>
+    <!--Section: Content-->
+</div>
+
+</div>
+
+{% endblock content %}
