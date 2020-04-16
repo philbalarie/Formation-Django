@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Default form register -->
+<form class="text-center border border-light p-5" method="POST" action="{% url 'register' %}" style="margin-top: 25px;">
+    {% csrf_token %}
+    <p class="h4 mb-4">Inscription</p>
+
+    <div class="form-row mb-4">
+        <div class="col">
+            <!-- First name -->
+            {{ form.first_name }}
+        </div>
+        <div class="col">
+            <!-- Last name -->
+            {{ form.last_name }}
+        </div>
+    </div>
+
+        <!-- username -->
+        {{ form.username }}
+    <!-- E-mail -->
+    {{ form.email }}
+
+    <!-- Password -->
+    {{ form.password }}
+    <small id="defaultRegisterFormPasswordHelpBlock" class="form-text text-muted mb-4">
+        Au moins 8 caractères
+    </small>
+
+    <!-- Password conf -->
+    {{ form.password_conf }}
+    <!-- Sign up button -->
+    <button class="btn btn-info my-4 btn-block" type="submit">S'enregistrer</button>
+
+    <!-- Social register -->
+    <p>ou s'inscrire avec: </p>
+
+    <a href="#" class="mx-2" role="button"><i class="fab fa-facebook-f light-blue-text"></i></a>
+    <a href="#" class="mx-2" role="button"><i class="fab fa-twitter light-blue-text"></i></a>
+    <a href="#" class="mx-2" role="button"><i class="fab fa-linkedin-in light-blue-text"></i></a>
+    <a href="#" class="mx-2" role="button"><i class="fab fa-github light-blue-text"></i></a>
+
+    <hr>
+
+    <!-- Terms of service -->
+    <p>En cliquant sur
+        <em>enregistrer</em> vous approuvez nos
+        <a href="" target="_blank">termes de service</a>
+
+</form>
+<!-- Default form register -->
+{% endblock content %}
