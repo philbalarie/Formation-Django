@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect
-from accounts.forms import RegisterForm
+from accounts.forms import RegisterForm, LoginForm
 from django.contrib.auth.models import User
 from django.contrib import messages, auth
 import pdb
 from accounts.ValidateForm import ValidateForm
 
 def register(request):
+
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+
     form = RegisterForm()
 
     context = {
@@ -32,24 +36,47 @@ def register(request):
                 user.save()
                 # TODO: envoyer un courriel de confirmation
                 auth.login(request, user)
-                messages.success(request, 'Vous êtes maintenant enregistrés')
+                messages.success(request, 'Vous êtes maintenant enregistré.')
                 return redirect('dashboard')
             else:
                 validate.get_error_messages()
                 return redirect('register')
 
-
-
-
-
-
     return render(request, 'accounts/register.html', context)
 
 def login(request):
-    pass
+
+    form = LoginForm()
+
+    context = {
+        'form' : form
+    }
+
+    if request.method == 'POST':
+
+        form = LoginForm(request.POST)
+
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+
+            user = auth.authenticate(username=username, password=password)
+
+            if user is not None:
+                auth.login(request, user)
+                messages.success(request,'Vous êtes maintenant connecté.')
+                return redirect('dashboard')
+            else:
+                messages.error(request, 'Identifiants erronés')
+                return redirect('login')
+
+    return render(request, 'accounts/login.html', context)
 
 def logout(request):
-    pass
+    if request.method == 'POST':
+        auth.logout(request)
+        messages.success(request, 'Vous êtes maintenant déconnecté.')
+        return redirect('index')
 
 def dashboard(request):
     return render(request, 'accounts/dashboard.html')

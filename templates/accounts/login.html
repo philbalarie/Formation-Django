@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- Default form login -->
+<form class="text-center border border-light p-5 mt-4 " method="POST" action="{% url 'login' %}">
+    {% csrf_token %}
+    <p class="h4 mb-4">Connexion</p>
+
+    {% include 'partials/_messages.html' %}
+
+    <!-- Email -->
+    {{ form.username }}
+
+    <!-- Password -->
+    {{ form.password }}
+
+    <div class="d-flex justify-content-around">
+
+        <div>
+            <!-- Forgot password -->
+            <a href="#">Mot de passe oublié ?</a>
+        </div>
+    </div>
+
+    <!-- Sign in button -->
+    <button class="btn btn-info btn-block my-4" type="submit">Se connecter</button>
+
+    <!-- Register -->
+    <p>Pas encore inscrit ?
+        <a href="{% url 'register' %}">S'inscrire</a>
+    </p>
+
+</form>
+<!-- Default form login -->
+{% endblock content %}
