@@ -50,6 +50,9 @@ class OrderTravel(models.Model):
     def __str__(self):
         return f"{self.quantity} de {self.travel.name}"
 
+    def get_total_travel_price(self):
+        return self.quantity * self.travel.price
+
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     ref_code = models.CharField(max_length=20, blank=True, null=True)
@@ -60,3 +63,9 @@ class Order(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def get_total_price(self):
+        total = 0
+        for travel in self.travels.all():
+            total += travel.get_total_travel_price()
+        return total

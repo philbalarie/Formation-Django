@@ -24,7 +24,7 @@
     </tr>
     {% endfor %}
     <td colspan="3"><b>Prix total</b></td>
-    <td><b>${{ order.get_total|intcomma }} $</b></td>
+    <td><b>{{ order.get_total_price|intcomma }} $</b></td>
 
   </tbody>
 </table>
