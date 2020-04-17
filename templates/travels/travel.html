@@ -37,9 +37,10 @@
 
         <p>{{ travel.destination.description }}</p>
 
-        <form class="d-flex justify-content-left">
-          <!-- Default input -->
-          <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
+        <form class="d-flex justify-content-left" method="POST" action="{% url 'cart' %}">
+          {% csrf_token %}
+          <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px" name="quantity">
+          <input type="hidden" value="{{ travel.slug }}" name="travel_slug">
           <button class="btn btn-primary btn-md my-0 p" type="submit">Ajouter au panier
             <i class="fas fa-shopping-cart ml-1"></i>
           </button>
