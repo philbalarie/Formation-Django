@@ -1,51 +1,58 @@
 {% extends 'base.html' %}
+
 {% load humanize %}
+
 {% block content %}
-<div class="container my-5 py-5 z-depth-1">
+  <!--Grid row-->
+  <div class="row wow fadeIn mt-3">
 
+    <!--Grid column-->
+    <div class="col-md-6 mb-4">
 
-    <!--Section: Content-->
-    <section class="px-md-5 mx-md-5 text-center text-lg-left dark-grey-text">
+      <img src="{{ travel.destination.picture.url }}" class="img-fluid" alt="{{ travel.slug }}">
 
-        <!--Grid row-->
-        <div class="row">
+    </div>
+    <!--Grid column-->
 
-            <!--Grid column-->
-            <div class="col-md-6 mb-4 mb-md-0">
+    <!--Grid column-->
+    <div class="col-md-6 mb-4">
 
-                <!--Image-->
-                <div>
-                    <img src="{{ travel.destination.picture.url }}" class="img-fluid"
-                        alt="{{ travel.destination.hotel_name }}">
-                    <a href="#">
-                        <div class="mask rgba-white-light"></div>
-                    </a>
-                </div>
+      <!--Content-->
+      <div class="p-4">
 
-            </div>
-            <!--Grid column-->
-
-            <!--Grid column-->
-            <div class="col-md-6 mb-4 mb-md-0">
-
-                <h3 class="font-weight-bold">{{ travel.name }}</h3>
-                <!-- Price -->
-                <p class="text-primary font-weight-bold">{{ travel.price|intcomma }} $</p>
-
-                <p class="text-muted">{{ travel.destination.description }}</p>
-
-                <a class="btn btn-blue btn-md ml-0" href="#" role="button">Commander<i class="fa fa-plane ml-2"></i></a>
-
-            </div>
-            <!--Grid column-->
-
+        <div class="mb-3">
+          <a href="">
+            <span class="badge purple mr-1">{{ travel.destination.get_country_display }}</span>
+          </a>
         </div>
-        <!--Grid row-->
 
-    </section>
-    <!--Section: Content-->
-</div>
+        <p class="lead">
+          <!--<span class="mr-1">
+            <del>$200</del>
+          </span> -->
+          <span>{{ travel.price|intcomma }} $</span>
+        </p>
 
-</div>
+        <p class="lead font-weight-bold">Description</p>
 
+        <p>{{ travel.destination.description }}</p>
+
+        <form class="d-flex justify-content-left">
+          <!-- Default input -->
+          <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
+          <button class="btn btn-primary btn-md my-0 p" type="submit">Ajouter au panier
+            <i class="fas fa-shopping-cart ml-1"></i>
+          </button>
+
+        </form>
+
+      </div>
+      <!--Content-->
+
+    </div>
+    <!--Grid column-->
+
+  </div>
+  <!--Grid row-->
 {% endblock content %}
+
