@@ -26,7 +26,6 @@ def cart(request):
                     orderTravel = OrderTravel.objects.create(quantity=quantity, travel=travel, user=request.user)
 
                 # Gestion de la commande
-
                 order_qs = Order.objects.filter(user=request.user, ordered=False)
 
                 if order_qs:
@@ -35,6 +34,19 @@ def cart(request):
                 else:
                     order = Order.objects.create(user=request.user)
                     order.travels.add(orderTravel)
+
+            order_qs = Order.objects.filter(user=request.user, ordered=False)
+
+            if order_qs:
+                order = order_qs[0]
+
+                context = { 'order' : order }
+
+                return render(request, 'shop/shopping_cart.html', context)
+            
+            else:
+                return render(request, 'shop/shopping_cart.html')
+            
     else:
         return redirect('login')
         
