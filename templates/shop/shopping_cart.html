@@ -25,10 +25,16 @@
     {% endfor %}
     <td colspan="3"><b>Prix total</b></td>
     <td><b>{{ order.get_total_price|intcomma }} $</b></td>
-
   </tbody>
 </table>
 {% else %}
 <p>Il n'y a aucun voyage dans votre panier</p>
 {% endif %}
+
+  <div class="row justify-content-end">
+    <div class="col-2">
+      <a href="{% url 'checkout' %}" class="btn btn-primary">Commander</a>
+    </div>
+  </div>
+
 {% endblock content %}

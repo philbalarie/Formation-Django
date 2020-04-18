@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from travels.models import Travel, OrderTravel, Order
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
 
 def cart(request):
 
@@ -56,4 +58,16 @@ def cart(request):
     return render(request, 'shop/shopping_cart.html')
 
 def checkout(request):
+
+    try:
+        order = Order.objects.get(user=request.user, ordered=False)
+
+        context = { 'order' : order }
+
+        return render(request, 'shop/checkout.html', context)
+
+    except ObjectDoesNotExist:
+        messages.info(request, 'Vous n\'avez présentement aucun voyage dans le panier')
+        return redirect('index')
+
     return render(request, 'shop/checkout.html')
