@@ -60,9 +60,11 @@ def cart(request):
 def checkout(request):
 
     try:
-        order = Order.objects.get(user=request.user, ordered=False)
+        order_qs = Order.objects.get(user=request.user, ordered=False)
 
-        context = { 'order' : order }
+        # FIXME: Ajouter le manager pour toutes les querysets pour chercher le order
+
+        context = { 'order' : order_qs }
 
         return render(request, 'shop/checkout.html', context)
 
@@ -71,3 +73,9 @@ def checkout(request):
         return redirect('index')
 
     return render(request, 'shop/checkout.html')
+
+def add_travel_to_cart(request, slug):
+
+    order_qs = Order.objects.get_user_order(request.user)
+
+    return redirect('cart')
