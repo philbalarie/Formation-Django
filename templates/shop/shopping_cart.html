@@ -20,7 +20,7 @@
       <th scope="row">{{ forloop.counter }}</th>
       <td>{{ product.travel }}</td>
       <td>{{ product.quantity }}</td>
-      <td>{w{ product.get_total_travel_price|intcomma }} $</td>
+      <td>{{ product.get_total_travel_price|intcomma }} $</td>
     </tr>
     {% endfor %}
     <td colspan="3"><b>Prix total</b></td>
