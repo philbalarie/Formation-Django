@@ -1,5 +1,5 @@
  {% load cart_template_tags %}
- 
+
  <!-- Navbar -->
  <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
    <div class="container">
@@ -41,15 +41,6 @@
              <input type="hidden">
            </form>
          </li>
-         {% else %}
-         <li class="nav-item">
-           <a class="nav-link waves-effect" href="{% url 'login' %}" >Connexion</a>
-         </li>
-         <li class="nav-item">
-           <a class="nav-link waves-effect" href="{% url 'register' %}">Inscription</a>
-         </li>
-         {% endif %}
-
        </ul>
 
        <!-- Right -->
@@ -61,18 +52,21 @@
              <span class="clearfix d-none d-sm-inline-block"> Panier </span>
            </a>
          </li>
-         <li class="nav-item">
-           <a href="https://www.facebook.com/mdbootstrap" class="nav-link waves-effect">
-             <i class="fab fa-facebook-f"></i>
-           </a>
-         </li>
-         <li class="nav-item">
-           <a href="https://twitter.com/MDBootstrap" class="nav-link waves-effect">
-             <i class="fab fa-twitter"></i>
-           </a>
-         </li>
-
        </ul>
+
+       {% else %}
+
+       <li class="nav-item">
+         <a class="nav-link waves-effect" href="{% url 'login' %}">Connexion</a>
+       </li>
+       <li class="nav-item">
+         <a class="nav-link waves-effect" href="{% url 'register' %}">Inscription</a>
+       </li>
+       </ul>
+
+
+       {% endif %}
+
 
      </div>
 

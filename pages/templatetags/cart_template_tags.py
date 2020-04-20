@@ -9,3 +9,5 @@ def cart_travel_count(user):
         order_qs = Order.objects.filter(user=user, ordered=False)
         if order_qs.exists():
             return order_qs[0].travels.count()
+        else:
+            return 0
