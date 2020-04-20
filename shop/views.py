@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from travels.models import Travel, OrderTravel, Order
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+import stripe
+import simplejson
 
 def cart(request):
 
@@ -53,26 +55,45 @@ def cart(request):
         return redirect('login')
         
 
-
-
     return render(request, 'shop/shopping_cart.html')
 
 def checkout(request):
 
+    stripe.api_key = 'sk_test_xrwfhsOIbGwnMyvv3C0qHc7600pS7pF05p'
+
     try:
-        order_qs = Order.objects.get(user=request.user, ordered=False)
+        order = Order.objects.get(user=request.user, ordered=False)
 
-        # FIXME: Ajouter le manager pour toutes les querysets pour chercher le order
+        line_items = []
 
-        context = { 'order' : order_qs }
+        for order_travel in order.travels.all():
+            line_items.append({
+                'name' : order_travel.travel.destination.hotel_name,
+                'description': order_travel.travel.destination.description,
+                'amount' : int(order_travel.travel.price) * 100,
+                'currency' : 'cad',
+                'quantity' : int(order_travel.quantity)
 
-        return render(request, 'shop/checkout.html', context)
+                })
+
+        stripe_session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=line_items,
+        success_url='http://127.0.0.1:8000/accounts/dashboard?p=success',
+        cancel_url='http://127.0.0.1:8000/accounts/dashboard?p=failure',
+    )
+
+        simplejson.dumps(stripe_session['id'])
+
+        stripe_id = simplejson.dumps(stripe_session['id'])
+        
+        return render(request, 'shop/checkout.html', {'stripe_id' : stripe_id})
 
     except ObjectDoesNotExist:
-        messages.info(request, 'Vous n\'avez présentement aucun voyage dans le panier')
-        return redirect('index')
+        messages.info('Vous n\'avez présentement aucun voyage dans votre panier')
+        return redirect('cart')
 
-    return render(request, 'shop/checkout.html')
+
 
 def add_travel_to_cart(request, slug):
 

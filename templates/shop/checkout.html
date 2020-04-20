@@ -1,119 +1,19 @@
-{% extends 'base.html' %}
+<script src="https://js.stripe.com/v3/"></script>
 
-{% load cart_template_tags %}
 
-{% block content %}
- <!-- Heading -->
- <h2 class="my-5 h2 text-center">Formulaire de paiement</h2>
+<script>
+    var stripe = Stripe('pk_test_rYz1odGCr1SNpx2h64AGOPnJ00gVC8huJk');
 
- <!--Grid row-->
- <div class="row">
+    stripe.redirectToCheckout({
 
-   <!--Grid column-->
-   <div class="col-md-8 mb-4">
+        sessionId: {{ stripe_id|safe }}
 
-     <!--Card-->
-     <div class="card">
+      }).then(function (result) {
+        // If `redirectToCheckout` fails due to a browser or network
+        // error, display the localized error message to your customer
+        // using `result.error.message`.
+      });
 
-       <!--Card content-->
-       <form class="card-body">
+</script>
 
-         <div class="row">
-           <div class="col-md-6 mb-3">
-             <label for="cc-name">Name on card</label>
-             <input type="text" class="form-control" id="cc-name" placeholder="" required>
-             <small class="text-muted">Full name as displayed on card</small>
-             <div class="invalid-feedback">
-               Name on card is required
-             </div>
-           </div>
-           <div class="col-md-6 mb-3">
-             <label for="cc-number">Credit card number</label>
-             <input type="text" class="form-control" id="cc-number" placeholder="" required>
-             <div class="invalid-feedback">
-               Credit card number is required
-             </div>
-           </div>
-         </div>
-         <div class="row">
-           <div class="col-md-3 mb-3">
-             <label for="cc-expiration">Expiration</label>
-             <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
-             <div class="invalid-feedback">
-               Expiration date required
-             </div>
-           </div>
-           <div class="col-md-3 mb-3">
-             <label for="cc-expiration">CVV</label>
-             <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
-             <div class="invalid-feedback">
-               Security code required
-             </div>
-           </div>
-         </div>
-         <hr class="mb-4">
-         <button class="btn btn-primary btn-lg btn-block" type="submit">Procéder au paiement</button>
-
-       </form>
-
-     </div>
-     <!--/.Card-->
-
-   </div>
-   <!--Grid column-->
-
-   <!--Grid column-->
-   <div class="col-md-4 mb-4">
-
-     <!-- Heading -->
-     <h4 class="d-flex justify-content-between align-items-center mb-3">
-       <span class="text-muted">Votre panier</span>
-       <span class="badge badge-secondary badge-pill">{{ request.user|cart_travel_count }}</span>
-     </h4>
-
-     <!-- Cart -->
-     <ul class="list-group mb-3 z-depth-1">
-
-      {% for product in order.travels.all %}
-       <li class="list-group-item d-flex justify-content-between lh-condensed">
-        <div>
-          <h6 class="my-0">{{ product.travel.name }}</h6>
-          <small class="text-muted">{{ product.travel.destination.get_country_display }}</small>
-        </div>
-        <span class="text-muted">{{ product.get_total_travel_price }} $</span>
-      </li>
-      {% endfor %}
-
-    <!-- FIXME: S'occuper de la création d'un code promo -->
-       <li class="list-group-item d-flex justify-content-between bg-light">
-         <div class="text-success">
-           <h6 class="my-0">Promo code</h6>
-           <small>EXAMPLECODE</small>
-         </div>
-         <span class="text-success">-$5</span>
-       </li>
-       <li class="list-group-item d-flex justify-content-between">
-         <span>Total (CAD)</span>
-         <strong>{{ order.get_total_price }}</strong>
-       </li>
-     </ul>
-     <!-- Cart -->
-
-     <!-- Promo code -->
-     <form class="card p-2">
-       <div class="input-group">
-         <input type="text" class="form-control" placeholder="Promo code" aria-label="Recipient's username" aria-describedby="basic-addon2">
-         <div class="input-group-append">
-           <button class="btn btn-secondary btn-md waves-effect m-0" type="button">Redeem</button>
-         </div>
-       </div>
-     </form>
-     <!-- Promo code -->
-
-   </div>
-   <!--Grid column-->
-
- </div>
- <!--Grid row-->
-{% endblock content %}
 
