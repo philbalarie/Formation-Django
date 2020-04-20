@@ -2,8 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from travels.models import Travel, OrderTravel, Order
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
+from django.conf import settings
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 import stripe
 import simplejson
+import time
+
 
 def cart(request):
 
@@ -59,7 +64,7 @@ def cart(request):
 
 def checkout(request):
 
-    stripe.api_key = 'sk_test_xrwfhsOIbGwnMyvv3C0qHc7600pS7pF05p'
+    stripe.api_key = settings.STRIPE_SECRET_KEY
 
     try:
         order = Order.objects.get(user=request.user, ordered=False)
@@ -78,6 +83,7 @@ def checkout(request):
 
         stripe_session = stripe.checkout.Session.create(
         payment_method_types=['card'],
+        customer_email=request.user.email,
         line_items=line_items,
         success_url='http://127.0.0.1:8000/accounts/dashboard?p=success',
         cancel_url='http://127.0.0.1:8000/accounts/dashboard?p=failure',
@@ -86,13 +92,44 @@ def checkout(request):
         simplejson.dumps(stripe_session['id'])
 
         stripe_id = simplejson.dumps(stripe_session['id'])
-        
+
         return render(request, 'shop/checkout.html', {'stripe_id' : stripe_id})
+        
 
     except ObjectDoesNotExist:
         messages.info('Vous n\'avez présentement aucun voyage dans votre panier')
         return redirect('cart')
 
+@csrf_exempt
+def payment_completed_hook(request):
+    payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    event = None
+
+    try:
+        event = stripe.Webhook.construct_event(
+        payload, 
+        sig_header, 
+        endpoint_secret
+            )
+
+    except ValueError as e:
+        # Invalid payload
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        return HttpResponse(status=400)
+
+            # Handle the checkout.session.completed event
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+
+        print(session)
+
+            # Fulfill the purchase...
+            #handle_checkout_session(session)
+
+        return HttpResponse(status=200)
 
 
 def add_travel_to_cart(request, slug):

@@ -79,6 +79,13 @@ def logout(request):
         return redirect('index')
 
 def dashboard(request):
+
+    if request.method == 'GET':
+        if request.GET.get('p') == 'success':
+            messages.success(request, 'Votre paiement a bien été envoyé')
+        if request.GET.get('p') == 'failure':
+            messages.success(request, 'Vous n\'avez pas complété votre paiement. Veuillez réessayer')
+
     return render(request, 'accounts/dashboard.html')
 
 

@@ -117,3 +117,5 @@ from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
+
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')

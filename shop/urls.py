@@ -7,5 +7,5 @@ urlpatterns = [
     path('shopping-cart/<slug:slug>/add', views.add_travel_to_cart, name='add_travel_to_cart'),
     path('shopping-cart/<slug:slug>/remove', views.remove_travel_to_cart, name='remove_travel_to_cart'),
     path('checkout', views.checkout, name='checkout'),
-
+    path('payment-hook', views.payment_completed_hook, name='payment_hook'),
 ]
