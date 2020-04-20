@@ -19,7 +19,7 @@
     <tr>
       <th scope="row">{{ forloop.counter }}</th>
       <td>{{ product.travel }}</td>
-      <td>{{ product.quantity }}</td>
+      <td><a class="mr-1" href="{% url 'remove_travel_to_cart' product.travel.slug  %}"><i class="fas fa-minus"></i></a> {{ product.quantity }} <a class="ml-1" href="{% url 'add_travel_to_cart' product.travel.slug  %}"><i class="fas fa-plus"></i></a></td>
       <td>{{ product.get_total_travel_price|intcomma }} $</td>
     </tr>
     {% endfor %}

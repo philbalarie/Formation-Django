@@ -76,6 +76,32 @@ def checkout(request):
 
 def add_travel_to_cart(request, slug):
 
-    order_qs = Order.objects.get_user_order(request.user)
+    order_qs = Order.objects.get(user=request.user, ordered=False)
+
+    travelOrder_qs = OrderTravel.objects.filter(travel__slug=slug)
+
+    if travelOrder_qs.exists():
+        travelOrder = travelOrder_qs[0]
+        travelOrder.quantity += 1
+        travelOrder.save()
+
+    return redirect('cart')
+
+def remove_travel_to_cart(request, slug):
+
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    
+    travelOrder_qs = OrderTravel.objects.filter(travel__slug=slug)
+
+    if travelOrder_qs.exists():
+        travelOrder = travelOrder_qs[0]
+        travelOrder.quantity -= 1
+        travelOrder.save()
+
+        if travelOrder.quantity == 0:
+            travelOrder.delete()
+
+            if order_qs[0].travels.count() == 0:
+                order_qs[0].delete()
 
     return redirect('cart')
