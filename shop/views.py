@@ -82,7 +82,7 @@ def checkout(request):
         success_url='http://127.0.0.1:8000/accounts/dashboard?p=success',
         cancel_url='http://127.0.0.1:8000/accounts/dashboard?p=failure',
     )
-
+        #TODO: Ajouter la gestion des erreurs et la gestion de la page de confirmation
         simplejson.dumps(stripe_session['id'])
 
         stripe_id = simplejson.dumps(stripe_session['id'])
