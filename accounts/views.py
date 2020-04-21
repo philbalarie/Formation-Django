@@ -5,6 +5,7 @@ from django.contrib import messages, auth
 import pdb
 from accounts.ValidateForm import ValidateForm
 from travels.models import Order, OrderTravel, Travel
+from django.contrib.auth.decorators import login_required
 
 def register(request):
 
@@ -73,12 +74,14 @@ def login(request):
 
     return render(request, 'accounts/login.html', context)
 
+@login_required
 def logout(request):
     if request.method == 'POST':
         auth.logout(request)
         messages.success(request, 'Vous êtes maintenant déconnecté.')
         return redirect('index')
 
+@login_required
 def dashboard(request):
 
     if request.method == 'GET':

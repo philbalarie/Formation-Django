@@ -1,6 +1,7 @@
 import os
 from decouple import config
 from django.conf import settings
+from django.shortcuts import reverse
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -119,3 +120,5 @@ MESSAGE_TAGS = {
 }
 
 STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
+
+LOGIN_URL = 'http://127.0.0.1:8000/accounts/login' # Pour utiliser le décorateur @login_required
