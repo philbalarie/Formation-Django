@@ -102,6 +102,10 @@ def checkout(request):
 
 @csrf_exempt
 def payment_completed_hook(request):
+    #FIXME: Valider la gestion du webhooks qui renvoit des 404...
+
+    endpoint_secret = 'whsec_...'
+
     payload = request.body
     sig_header = request.META['HTTP_STRIPE_SIGNATURE']
     event = None
@@ -114,20 +118,32 @@ def payment_completed_hook(request):
             )
 
     except ValueError as e:
-        # Invalid payload
+        print('ca ne fonctione pas...')
         return HttpResponse(status=400)
     except stripe.error.SignatureVerificationError as e:
-        # Invalid signature
+        print('Ca ne fonctionne toujours pas...')
         return HttpResponse(status=400)
 
             # Handle the checkout.session.completed event
     if event['type'] == 'checkout.session.completed':
         session = event['data']['object']
 
-        print(session)
+        #FIXME: Fixer le fait que ces comportements ne veulent pas arriver
 
-            # Fulfill the purchase...
-            #handle_checkout_session(session)
+
+        def handle_checkout_session(session):
+            order_qs = Order.objects.all()
+
+            if order_qs.exists():
+                order = order_qs[0]
+
+                order.ordered = True
+                for orderTravel in order.travels.all():
+                    orderTravel.ordered = True
+                    orderTravel.save()
+                order.save()
+
+        handle_checkout_session(session)
 
         return HttpResponse(status=200)
 
