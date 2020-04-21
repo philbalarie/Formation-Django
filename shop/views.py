@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from travels.models import Travel, OrderTravel, Order
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.contrib import messages
 from django.conf import settings
 from django.http import HttpResponse
@@ -90,6 +90,9 @@ def checkout(request):
 
         return render(request, 'shop/checkout.html', {'stripe_id' : stripe_id})
         
+    except MultipleObjectsReturned:
+        messages.info('Il semblerait que vous ayez plus d\'une commande en cours...')
+        return redirect('index')
 
     except ObjectDoesNotExist:
         messages.info('Vous n\'avez présentement aucun voyage dans votre panier')
