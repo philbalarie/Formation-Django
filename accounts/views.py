@@ -34,7 +34,7 @@ def register(request):
             validation_form = validate.register_form(first_name=first_name, last_name=last_name, email=email, username=username, password=password, password_conf=password_conf)
 
             if validation_form:
-                user = User.objects.create(first_name=first_name, last_name=last_name, username=username, email=email, password=password)
+                user = User.objects.create_user(first_name=first_name, last_name=last_name, username=username, email=email, password=password)
                 user.save()
                 # TODO: envoyer un courriel de confirmation
                 auth.login(request, user)
